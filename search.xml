@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>page</title>
-    <url>/2024/11/10/page/</url>
-    <content><![CDATA[]]></content>
+    <title>测试</title>
+    <url>/posts/2024/1441.html</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Sponsor/reward，打赏图片</span><br><span class="line">reward:</span><br><span class="line">  enable: false</span><br><span class="line">  QR_code:</span><br><span class="line">    # - img: /img/wechat.jpg</span><br><span class="line">    #   link:</span><br><span class="line">    #   text: wechat</span><br><span class="line">    # - img: /img/alipay.jpg</span><br><span class="line">    #   link:</span><br><span class="line">    #   text: alipay</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Share System (分享功能)</span><br><span class="line"># --------------------------------------</span><br><span class="line">#分享功能可以分享的图片</span><br><span class="line"># Share.js</span><br><span class="line"># https://github.com/overtrue/share.js</span><br><span class="line">sharejs:</span><br><span class="line">  enable: true</span><br><span class="line">  sites: wechat,weibo,qq</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
     <title>Gallery</title>
@@ -22,13 +22,13 @@
 ]]></content>
   </entry>
   <entry>
-    <title>分类</title>
-    <url>/categories/index.html</url>
+    <title>标签</title>
+    <url>/tags/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>标签</title>
-    <url>/tags/index.html</url>
+    <title>分类</title>
+    <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
