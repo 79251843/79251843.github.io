@@ -14,10 +14,7 @@ function fetchIPInfo() {
                 // 构建HTML内容
                 let html = '<style>.visitor_location{color:#cb4c46;font-weight:bold;}.visitor_ip{color:#2d80c2;font-weight:bold;}</style>';
                 html += '<div class="visitor">';
-                html += '欢迎来自</br> ' + '<span class="visitor_location">' + data.info.prov + '' + data.info.city + '</span>' + ' 的小伙伴！';
-                html += '</br>';
-                html += '访问IP：' + '<span class="visitor_ip">' + data.ip + '</span>';
-                html += '</div>';
+                html += '欢迎' + '<span class="visitor_location">' + data.info.prov + '' + data.info.city + '</span>' + '的小伙伴！</br>爱你么么哒！';
                 // 将HTML内容设置到页面的指定元素中
                 document.getElementById('visitor-container').innerHTML = html;
             } else {

@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hexo添加当前访客信息</title>
+    <url>/posts/2024/25147.html</url>
+    <content><![CDATA[<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://0923067.webp.li/202411111424524.webp"></p>
+<h3 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h3><p>1.在\themes\butterfly\layout\includes\widget目录下新建card_visitor.pug文件，并写入如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if theme.aside.card_visitor.enable</span><br><span class="line">  .card-widget.card-visitor</span><br><span class="line">    .card-content</span><br><span class="line">      .item-headline</span><br><span class="line">        i.fas.fa-user</span><br><span class="line">        span Hi!!</span><br><span class="line">      #visitor-container</span><br><span class="line">        .visitor</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>2.在\themes\butterfly\layout\includes\widget\index.pug文件中page项添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">!=partial(&#x27;includes/widget/card_visitor&#x27;, &#123;&#125;, &#123;cache: true&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://0923067.webp.li/202411111426322.webp"></p>
+<p>3.在\themes\butterfly\source\js目录下新建visitor.js文件，并写入如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 定义一个函数来获取IP信息并显示在页面上</span><br><span class="line">function fetchIPInfo() &#123;</span><br><span class="line">    fetch(&#x27;https://api.vvhan.com/api/ipInfo&#x27;)</span><br><span class="line">        .then(response =&gt; &#123;</span><br><span class="line">            // 检查响应是否成功</span><br><span class="line">            if (!response.ok) &#123;</span><br><span class="line">                throw new Error(&#x27;Network response was not ok&#x27;);</span><br><span class="line">            &#125;</span><br><span class="line">            return response.json();</span><br><span class="line">        &#125;)</span><br><span class="line">        .then(data =&gt; &#123;</span><br><span class="line">            // 检查API调用是否成功</span><br><span class="line">            if (data.success) &#123;</span><br><span class="line">                // 构建HTML内容</span><br><span class="line">                let html = &#x27;&lt;style&gt;.visitor_location&#123;color:#cb4c46;font-weight:bold;&#125;.visitor_ip&#123;color:#2d80c2;font-weight:bold;&#125;&lt;/style&gt;&#x27;;</span><br><span class="line">                html += &#x27;&lt;div class=&quot;visitor&quot;&gt;&#x27;;</span><br><span class="line">                html += &#x27;欢迎&#x27; + &#x27;&lt;span class=&quot;visitor_location&quot;&gt;&#x27; + data.info.prov + &#x27;&#x27; + data.info.city + &#x27;&lt;/span&gt;&#x27; + &#x27;的小伙伴！&lt;/br&gt;爱你么么哒！&#x27;;</span><br><span class="line">                // 将HTML内容设置到页面的指定元素中</span><br><span class="line">                document.getElementById(&#x27;visitor-container&#x27;).innerHTML = html;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                // 如果API调用不成功，显示错误信息</span><br><span class="line">                document.getElementById(&#x27;visitor-container&#x27;).innerHTML = &#x27;获取IP信息失败&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .catch(error =&gt; &#123;</span><br><span class="line">            // 捕获并显示错误</span><br><span class="line">            console.error(&#x27;There has been a problem with your fetch operation:&#x27;, error);</span><br><span class="line">            document.getElementById(&#x27;visitor-container&#x27;).innerHTML = &#x27;获取IP信息时发生错误&#x27;;</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 调用函数</span><br><span class="line">fetchIPInfo();</span><br></pre></td></tr></table></figure>
+
+<p>并在主题配置文件_config.butterfly.yml的bottom处引入该文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inject:</span><br><span class="line">  bottom:</span><br><span class="line">    - &lt;script src=&quot;/js/visitor.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>4.在主题配置文件_config.butterfly.yml的aside处添加如下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aside:</span><br><span class="line">    card_visitor:</span><br><span class="line">    enable: true</span><br><span class="line">    sort_order: # Don&#x27;t modify the setting unless you know how it works</span><br></pre></td></tr></table></figure>
+
+<p>可以在配置文件中选择开启或关闭</p>
+<p>5.重新部署，即可看到效果。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Hexo侧边栏添加微博热搜</title>
     <url>/posts/2024/57697.html</url>
     <content><![CDATA[<h2 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h2><p><img src="https://0923067.webp.li/202411110945403.webp"></p>
@@ -46,13 +70,18 @@
 ]]></content>
   </entry>
   <entry>
+    <title>友情链接</title>
+    <url>/link/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>标签</title>
     <url>/tags/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>友情链接</title>
-    <url>/link/index.html</url>
+    <title>分类</title>
+    <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
@@ -62,10 +91,5 @@
       <div class="gallery-items">[{"url":"https://i.loli.net/2019/12/25/Fze9jchtnyJXMHN.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/ryLVePaqkYm4TEK.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/gEy5Zc1Ai6VuO4N.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/6nepIJ1xTgufatZ.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/E7Jvr4eIPwUNmzq.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/mh19anwBSWIkGlH.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/2tu9JC8ewpBFagv.jpg","alt":""}]</div>
     </div>
 ]]></content>
-  </entry>
-  <entry>
-    <title>分类</title>
-    <url>/categories/index.html</url>
-    <content><![CDATA[]]></content>
   </entry>
 </search>
