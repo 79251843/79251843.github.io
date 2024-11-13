@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>通过 bat 脚本实现 hexo 常用功能菜单</title>
-    <url>/posts/2024/57698.html</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>广大的 Hexo 用户：你是否面对每天重复且繁杂的 hexo new、hexo new page、hexo g、hexo cl 等等这些命令感到厌烦？</p>
-<p>重复的命令动作天天敲，而且有时候容易搞错混淆，我们是否可以通过脚本的方式实现它自动化？比如只需要写一个 Windows 的 bat 脚本，我们可以轻松实现只需要输入相应选项，即可自动进行这些命令操作。</p>
-<h1 id="功能介绍以及演示"><a href="#功能介绍以及演示" class="headerlink" title="功能介绍以及演示"></a>功能介绍以及演示</h1><ol>
-<li>创建新文章：提示用户输入文章名称，然后使用 Hexo 创建一篇新文章。</li>
-<li>创建新页面：提示用户输入页面名称，然后使用 Hexo 创建一个新页面。</li>
-<li>生成静态文件：使用 Hexo g 生成静态文件。</li>
-<li>创建文章并自动打开 Typora 编辑器：提示用户输入文章名称，然后使用 Hexo new 创建一篇新文章，并自动打开 Typora 编辑器以便用户编辑<strong>（请确定 Typora 在系统的环境变量里面，不然无效，可以自己根据实际需求更改代码替换编辑器）</strong>。</li>
-<li>本地运行网站并自动打开浏览器：启动 Hexo 本地服务器，并在本地服务器启动后 5s（这里等待 5s 是为了避免本地服务器未完全启动导致打开 404，可根据实际情况对代码调整）自动打开浏览器访问本地 Hexo 页面（默认 localhost:4000）。</li>
-<li>清除缓存：调用 Hexo clean 清除缓存文件。</li>
-<li>一键部署：先清除缓存，然后生成静态文件并部署到远程服务器，最后再次清除本地数据库。</li>
-<li>退出：退出脚本关闭终端窗口。</li>
-</ol>
-<h4 id="这里就提供一张本文创建时的使用截图参考"><a href="#这里就提供一张本文创建时的使用截图参考" class="headerlink" title="这里就提供一张本文创建时的使用截图参考"></a>这里就提供一张本文创建时的使用截图参考</h4><p><img src="https://0923067.webp.li/202411121940633.webp"></p>
-<h1 id="bat-代码"><a href="#bat-代码" class="headerlink" title="bat 代码"></a>bat 代码</h1><p>根据上述介绍，可以按照需求自行更改一些功能，本文仅适用于 Windows，其他平台请自己编写。</p>
-<p>使用方法：鼠标右键新建一个文本将后缀改为.bat，名字自拟。或者使用自己的 IDE 新建一个 bat 文件，然后将代码粘贴进去保存即可双击运行。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@echo off</span><br><span class="line">chcp 65001 &gt;nul</span><br><span class="line">setlocal enabledelayedexpansion</span><br><span class="line"></span><br><span class="line">:menu</span><br><span class="line">cls</span><br><span class="line">echo *********************************************</span><br><span class="line">echo *           Hexo Blog Management            *</span><br><span class="line">echo *********************************************</span><br><span class="line">echo * 1. 创建新文章                             *</span><br><span class="line">echo * 2. 创建新页面                             *</span><br><span class="line">echo * 3. 生成静态文件                           *</span><br><span class="line">echo * 4. 创建文章并自动打开Typora编辑器         *</span><br><span class="line">echo * 5. 本地运行网站并自动打开浏览器           *</span><br><span class="line">echo * 6. 清除缓存                               *</span><br><span class="line">echo * 7. 一键部署                               *</span><br><span class="line">echo * 8. 退出                                   *</span><br><span class="line">echo *********************************************</span><br><span class="line">set /p choice=请输入您的选择（1-8）：</span><br><span class="line"></span><br><span class="line">if %choice%==1 goto article</span><br><span class="line">if %choice%==2 goto page</span><br><span class="line">if %choice%==3 goto generate</span><br><span class="line">if %choice%==4 goto article_with_editor</span><br><span class="line">if %choice%==5 goto server</span><br><span class="line">if %choice%==6 goto clean</span><br><span class="line">if %choice%==7 goto deploy</span><br><span class="line">if %choice%==8 goto exit</span><br><span class="line"></span><br><span class="line">:article</span><br><span class="line">set /p name=请输入文章名字：</span><br><span class="line">call hexo new &quot;%name%&quot;</span><br><span class="line">echo 文章创建成功，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:page</span><br><span class="line">set /p pagename=请输入页面名字：</span><br><span class="line">call hexo new page &quot;%pagename%&quot;</span><br><span class="line">echo 页面创建成功，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:generate</span><br><span class="line">call hexo generate</span><br><span class="line">echo 静态文件生成成功，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:article_with_editor</span><br><span class="line">set /p name=请输入文章名字：</span><br><span class="line">call hexo new &quot;%name%&quot;</span><br><span class="line">echo 文章创建成功，正在打开Typora编辑器...</span><br><span class="line">start &quot;&quot; &quot;typora&quot; &quot;source\_posts\%name%.md&quot;</span><br><span class="line">echo 请在Typora中编辑文章，编辑完成后按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:server</span><br><span class="line">start cmd /k &quot;hexo server&quot;</span><br><span class="line">echo 本地服务器已启动，请访问 http://localhost:4000/，浏览器将在服务器启动后5秒内自动打开。</span><br><span class="line">timeout /t 5 &gt;nul</span><br><span class="line">echo 浏览器已自动打开本地Hexo页面。</span><br><span class="line">start &quot;&quot; &quot;http://localhost:4000&quot;</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:clean</span><br><span class="line">call hexo clean</span><br><span class="line">echo 缓存已清除，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:deploy</span><br><span class="line">call hexo clean &amp;&amp; call hexo g &amp;&amp; call hexo d &amp;&amp; call hexo cl</span><br><span class="line">echo 部署完成，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:exit</span><br><span class="line">echo 感谢使用，再见！</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hexo侧边栏添加微博热搜</title>
     <url>/posts/2024/57697.html</url>
     <content><![CDATA[<h2 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h2><p><img src="https://0923067.webp.li/202411110945403.webp"></p>
@@ -58,9 +33,29 @@
       </tags>
   </entry>
   <entry>
-    <title>友情链接</title>
-    <url>/link/index.html</url>
-    <content><![CDATA[]]></content>
+    <title>通过 bat 脚本实现 hexo 常用功能菜单</title>
+    <url>/posts/2024/57698.html</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>广大的 Hexo 用户：你是否面对每天重复且繁杂的 hexo new、hexo new page、hexo g、hexo cl 等等这些命令感到厌烦？</p>
+<p>重复的命令动作天天敲，而且有时候容易搞错混淆，我们是否可以通过脚本的方式实现它自动化？比如只需要写一个 Windows 的 bat 脚本，我们可以轻松实现只需要输入相应选项，即可自动进行这些命令操作。</p>
+<h1 id="功能介绍以及演示"><a href="#功能介绍以及演示" class="headerlink" title="功能介绍以及演示"></a>功能介绍以及演示</h1><ol>
+<li>创建新文章：提示用户输入文章名称，然后使用 Hexo 创建一篇新文章。</li>
+<li>创建新页面：提示用户输入页面名称，然后使用 Hexo 创建一个新页面。</li>
+<li>生成静态文件：使用 Hexo g 生成静态文件。</li>
+<li>创建文章并自动打开 Typora 编辑器：提示用户输入文章名称，然后使用 Hexo new 创建一篇新文章，并自动打开 Typora 编辑器以便用户编辑<strong>（请确定 Typora 在系统的环境变量里面，不然无效，可以自己根据实际需求更改代码替换编辑器）</strong>。</li>
+<li>本地运行网站并自动打开浏览器：启动 Hexo 本地服务器，并在本地服务器启动后 5s（这里等待 5s 是为了避免本地服务器未完全启动导致打开 404，可根据实际情况对代码调整）自动打开浏览器访问本地 Hexo 页面（默认 localhost:4000）。</li>
+<li>清除缓存：调用 Hexo clean 清除缓存文件。</li>
+<li>一键部署：先清除缓存，然后生成静态文件并部署到远程服务器，最后再次清除本地数据库。</li>
+<li>退出：退出脚本关闭终端窗口。</li>
+</ol>
+<h4 id="这里就提供一张本文创建时的使用截图参考"><a href="#这里就提供一张本文创建时的使用截图参考" class="headerlink" title="这里就提供一张本文创建时的使用截图参考"></a>这里就提供一张本文创建时的使用截图参考</h4><p><img src="https://0923067.webp.li/202411121940633.webp"></p>
+<h1 id="bat-代码"><a href="#bat-代码" class="headerlink" title="bat 代码"></a>bat 代码</h1><p>根据上述介绍，可以按照需求自行更改一些功能，本文仅适用于 Windows，其他平台请自己编写。</p>
+<p>使用方法：鼠标右键新建一个文本将后缀改为.bat，名字自拟。或者使用自己的 IDE 新建一个 bat 文件，然后将代码粘贴进去保存即可双击运行。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@echo off</span><br><span class="line">chcp 65001 &gt;nul</span><br><span class="line">setlocal enabledelayedexpansion</span><br><span class="line"></span><br><span class="line">:menu</span><br><span class="line">cls</span><br><span class="line">echo *********************************************</span><br><span class="line">echo *           Hexo Blog Management            *</span><br><span class="line">echo *********************************************</span><br><span class="line">echo * 1. 创建新文章                             *</span><br><span class="line">echo * 2. 创建新页面                             *</span><br><span class="line">echo * 3. 生成静态文件                           *</span><br><span class="line">echo * 4. 创建文章并自动打开Typora编辑器         *</span><br><span class="line">echo * 5. 本地运行网站并自动打开浏览器           *</span><br><span class="line">echo * 6. 清除缓存                               *</span><br><span class="line">echo * 7. 一键部署                               *</span><br><span class="line">echo * 8. 退出                                   *</span><br><span class="line">echo *********************************************</span><br><span class="line">set /p choice=请输入您的选择（1-8）：</span><br><span class="line"></span><br><span class="line">if %choice%==1 goto article</span><br><span class="line">if %choice%==2 goto page</span><br><span class="line">if %choice%==3 goto generate</span><br><span class="line">if %choice%==4 goto article_with_editor</span><br><span class="line">if %choice%==5 goto server</span><br><span class="line">if %choice%==6 goto clean</span><br><span class="line">if %choice%==7 goto deploy</span><br><span class="line">if %choice%==8 goto exit</span><br><span class="line"></span><br><span class="line">:article</span><br><span class="line">set /p name=请输入文章名字：</span><br><span class="line">call hexo new &quot;%name%&quot;</span><br><span class="line">echo 文章创建成功，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:page</span><br><span class="line">set /p pagename=请输入页面名字：</span><br><span class="line">call hexo new page &quot;%pagename%&quot;</span><br><span class="line">echo 页面创建成功，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:generate</span><br><span class="line">call hexo generate</span><br><span class="line">echo 静态文件生成成功，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:article_with_editor</span><br><span class="line">set /p name=请输入文章名字：</span><br><span class="line">call hexo new &quot;%name%&quot;</span><br><span class="line">echo 文章创建成功，正在打开Typora编辑器...</span><br><span class="line">start &quot;&quot; &quot;typora&quot; &quot;source\_posts\%name%.md&quot;</span><br><span class="line">echo 请在Typora中编辑文章，编辑完成后按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:server</span><br><span class="line">start cmd /k &quot;hexo server&quot;</span><br><span class="line">echo 本地服务器已启动，请访问 http://localhost:4000/，浏览器将在服务器启动后5秒内自动打开。</span><br><span class="line">timeout /t 5 &gt;nul</span><br><span class="line">echo 浏览器已自动打开本地Hexo页面。</span><br><span class="line">start &quot;&quot; &quot;http://localhost:4000&quot;</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:clean</span><br><span class="line">call hexo clean</span><br><span class="line">echo 缓存已清除，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:deploy</span><br><span class="line">call hexo clean &amp;&amp; call hexo g &amp;&amp; call hexo d &amp;&amp; call hexo cl</span><br><span class="line">echo 部署完成，请按任意键返回菜单。</span><br><span class="line">pause &gt;nul</span><br><span class="line">goto menu</span><br><span class="line"></span><br><span class="line">:exit</span><br><span class="line">echo 感谢使用，再见！</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
   </entry>
   <entry>
     <title>Gallery</title>
@@ -79,13 +74,13 @@
 ]]></content>
   </entry>
   <entry>
-    <title>分类</title>
-    <url>/categories/index.html</url>
+    <title>友情链接</title>
+    <url>/link/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>标签</title>
-    <url>/tags/index.html</url>
+    <title>分类</title>
+    <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
@@ -95,5 +90,10 @@
       <div class="gallery-items">[{"url":"https://i.loli.net/2019/12/25/Fze9jchtnyJXMHN.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/ryLVePaqkYm4TEK.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/gEy5Zc1Ai6VuO4N.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/6nepIJ1xTgufatZ.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/E7Jvr4eIPwUNmzq.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/mh19anwBSWIkGlH.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/2tu9JC8ewpBFagv.jpg","alt":""}]</div>
     </div>
 ]]></content>
+  </entry>
+  <entry>
+    <title>标签</title>
+    <url>/tags/index.html</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>
