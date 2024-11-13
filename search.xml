@@ -20,33 +20,25 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo基于butterfly的图流背景与顶部图修改</title>
-    <url>/posts/2024/31891.html</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前使用过 <a href="/posts/2024/30918.html" title="hexo基于butterfly的页脚美化">hexo基于butterfly的页脚美化</a> 的请注意侧边栏透明化。</p>
-<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="1-设置图片"><a href="#1-设置图片" class="headerlink" title="1.设置图片"></a>1.设置图片</h3><p>这个是 Butterfly 自带的功能，修改主题的配置文件 _config.butterfly.yml.</p>
-<p>编辑 index_img、background、footer_img 选项。<br>设置网站背景，并将主页顶部图和页脚背景改为透明。<br>(需要将以下示例地址替换为自己的图片地址。)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Image (圖片設置)</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># The banner image of home page</span><br><span class="line">index_img: transparent</span><br><span class="line"></span><br><span class="line"># Beautify/Effect (美化/效果)</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># Website Background (設置網站背景)</span><br><span class="line"># can set it to color or image (可設置圖片 或者 顔色)</span><br><span class="line"># The formal of image: url(http://xxxxxx.com/xxx.jpg)</span><br><span class="line">background: url(https://example.com/img/background.jpg)</span><br><span class="line"></span><br><span class="line"># Footer Background</span><br><span class="line">footer_img: transparent</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-引入相关样式"><a href="#2-引入相关样式" class="headerlink" title="2.引入相关样式"></a>2.引入相关样式</h3><p>新建一个文件，位于 source&#x2F;css&#x2F;modify.styl，并增加以下内容。<br>(此处只是举例，也可以使用自己已有的样式文件。)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@import &#x27;nib&#x27;</span><br><span class="line"></span><br><span class="line">// 顶部图</span><br><span class="line">#page-header</span><br><span class="line">  &amp;, &amp;:before</span><br><span class="line">    background: transparent !important</span><br><span class="line">  &amp;.post-bg, &amp;.not-home-page</span><br><span class="line">    height: 280px !important</span><br><span class="line">  #post-info</span><br><span class="line">    bottom: 40px !important</span><br><span class="line">  #page-site-info</span><br><span class="line">    top: 140px !important</span><br><span class="line"></span><br><span class="line">  @media screen and (max-width: 768px)</span><br><span class="line">    &amp;.not-home-page</span><br><span class="line">      height: 200px !important</span><br><span class="line">    #post-info</span><br><span class="line">      bottom: 10px !important</span><br><span class="line">    #page-site-info</span><br><span class="line">      top: 100px !important</span><br><span class="line"></span><br><span class="line">.top-img</span><br><span class="line">  height: 250px</span><br><span class="line">  margin: -50px -40px 50px</span><br><span class="line">  border-top-left-radius: inherit</span><br><span class="line">  border-top-right-radius: inherit</span><br><span class="line">  background-position: center center</span><br><span class="line">  background-size: cover</span><br><span class="line">  transition: all 0.3s</span><br><span class="line"></span><br><span class="line">  @media screen and (max-width: 768px)</span><br><span class="line">    height: 230px</span><br><span class="line">    margin: -36px -14px 36px</span><br><span class="line"></span><br><span class="line">  [data-theme=&#x27;dark&#x27;] &amp;</span><br><span class="line">    filter: brightness(0.8)</span><br><span class="line"></span><br><span class="line">// 页脚</span><br><span class="line">#footer:before</span><br><span class="line">  background-color: alpha(#FFF, .5)</span><br><span class="line"></span><br><span class="line">  [data-theme=&#x27;dark&#x27;] &amp;</span><br><span class="line">    background-color: alpha(#000, .5)</span><br><span class="line"></span><br><span class="line">#footer-wrap, #footer-wrap a</span><br><span class="line">  color: #111</span><br><span class="line">  transition: unset</span><br><span class="line"></span><br><span class="line">  [data-theme=&#x27;dark&#x27;] &amp;</span><br><span class="line">    color: var(--light-grey)</span><br></pre></td></tr></table></figure>
-
-<p>在主题配置文件 _config.butterfly.yml 的 inject.head 引入样式。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># other (其他)</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># Inject</span><br><span class="line"># Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)</span><br><span class="line"># 插入代码到头部 &lt;/head&gt; 之前 和 底部 &lt;/body&gt; 之前</span><br><span class="line">inject:</span><br><span class="line">  head:</span><br><span class="line">    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/modify.css&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>modify.styl 会被 Hexo 渲染成 modify.css 文件，所以此处应为 modify.css。</p>
-<p>这时候，hexo cl; hexo g; hexo s;查看效果！没问题就hexo d上传。有问题接着往下看：</p>
-<h3 id="增加插件脚本-上面没问题无需往下看"><a href="#增加插件脚本-上面没问题无需往下看" class="headerlink" title="增加插件脚本(上面没问题无需往下看)"></a>增加插件脚本(上面没问题无需往下看)</h3><p>因为使用了 cheerio 来解析 HTML，所以需要先安装此依赖。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install cheerio</span><br></pre></td></tr></table></figure>
-
-<p>新建一个文件，位于 scripts&#x2F;modify.js，并增加以下内容。<br>(此处只是举例，也可以使用自己已有的插件脚本文件。)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;use strict&#x27;;</span><br><span class="line">const cheerio = require(&#x27;cheerio&#x27;);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 在页面插入新顶部图</span><br><span class="line"> * @param &#123;cheerio.Root&#125; $ Root</span><br><span class="line"> */</span><br><span class="line">function insertTopImg($) &#123;</span><br><span class="line">    let header = $(&#x27;#page-header&#x27;);</span><br><span class="line">    if (header.length === 0) return;</span><br><span class="line">    let background = header.css(&#x27;background-image&#x27;);</span><br><span class="line">    if (!background) return;</span><br><span class="line">    $(&#x27;#post, #page, #archive, #tag, #category&#x27;).prepend(`&lt;div class=&quot;top-img&quot; style=&quot;background-image: $&#123;background&#125;;&quot;&gt;&lt;/div&gt;`);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">hexo.extend.filter.register(&#x27;after_render:html&#x27;, function(str, data) &#123;</span><br><span class="line">    let $ = cheerio.load(str, &#123;</span><br><span class="line">        decodeEntities: false</span><br><span class="line">    &#125;);</span><br><span class="line">    insertTopImg($);</span><br><span class="line">    return $.html();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="大功告成"><a href="#大功告成" class="headerlink" title="大功告成"></a>大功告成</h3>]]></content>
+    <title>hexo 实现文章加密 -- 密码 123</title>
+    <url>/posts/2024/4179.html</url>
+    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="ca283c1ca855f988c678118a5fb7c827af739f60e2af61936a5becd9c5b7ea27">165d50f05814027fb7fe5e4ae8a088d8cabf1ea2d88ccf0f53dc7b0b289f3333436c38cc74dc0e97c43b3937485e57fe65c00bee653038e0d3a5dae18c5eac635a741ab53be64373aed6318c84719b742dec4f60238ace1561fabb56989ba29e99da77fc39f2faf63181d675035e05e4f5593d3afbf3603b1121900f7012f15f414a2bd96c5f738d4f6a255df17f36cd2c18d637fca7422b38d869879c85a60e2ad7e06bec03a1bb5bfe2f5714c46f9bc4934e3881815614d7ffeec74dde6150c9ac0869bdb872af2d432e7baa90cb16b1d1d58c3fbd0187604f6b534947af919fefd70111c109c77fba89e2b4681bbf4fb75b2cfff201d89cbf42365e0388181089c48157d011f07ce81c216600e91ea2021ffb9300883255b68cc6ec108551e88fd78c5a1ed70a1d7b7d0159f046dfd57ff0f00cd3841da2340fc37cabf9a181d6ee275a97ab3e94da77766c5e1b5bdc9cbc7180569c6a8ccf5746a90d5263201279c2d2d8237fcae953bdf4225219524034b26654c59e2db8298f9258aa049cba2b34c3f40f13eed0858d15208171f399af4c3297a628a0bda917e4f48ab847dc0944f76ca24d39d168c59d552aa222344c7a4551c4e73d9229cdc00f6cb1a9aa05ab34f841560eb4444fb89756e464820f8243d8848a6f01349192ac6e19fc61c6d25b58ae472ba110b045d9337e8f19e78c7f144326e96e66db172d7c24ff21fdfe92d784d8041ba1a7e7e2999b738c011a4b15d57a9f8de57c2e20bb1d0fe09d24eaaa6cca4d18d18384d24bac853219abfcf48b53562f52e986d31358e805de71d09816814793ba79d520431a4bc36aae1e3223f960e033a67ee83373afcbe350ff88ddab9302277c91f17cb198cf680d5a2a5a418ee09a3279d2e6b5f232dddedc06074afae28bee7a45831b24c7ee81189f9803e6340fca27dbb984738f23ac5abc01d6b9d8285f0b4ace0f06e503c9153a88f442cb40964ea4e9fbd838a5a998f42a305bf261917f7a588bdc74337d321ad297336d39c93dbb1ebf35a71c80fa3495a591eaaa78f6aec1a5237fe46baa3d6f0fcd0d69b857007910d4cb952daf6c5e39246432647d7f51b0110daed9863a3139e148c7d67c9153bcb7ad0385c604f5233e85d1bfcaec579b620c3cd64d1e1d6ff5bee27bc23b4043e6fcbb5aca249684ce42c04b0a769d00695e034352e1744d83423501053617b20a8046366afdf5d27d892a1c80543a58771d3dfd731a04efa42c084101b8d83c861b9801eb052584905c8f1d1452e127a12e23d39b94ab82ee3f956e44923b5a3f82d364018f9da0949f328caff34b76d1ba818a09bb27d4a87201ce0e7e3b2dbcbab6df7ac3a2c43d002c0c862e65e44d0d3f88f220ed4ac73dc231f2a2afe855d9881cc3ec0a796442e16e5e56b34503458688d80e4f116b053f0bd87fbc5d19a788c9e2fab7e0726a342f15c25a90ab201bd9863e40aadbef9840da25287b66b4f322c224975c46cf86c8fbea5f8bd5e7483ff53573bfd700e585fafbca9600313459bbf90e0493a2d321bd04dcb8e0143c4488cca04d150dd9e5a59d965d1eba34094b639c54103a14461e9ca99f912622e31c24b75d4561c82e50bd7a55d718de535dd46bb9ae30283502dbd5a649027bdf1b4711dfbcd6529badd3e30b569fb159a4a281448910475f039edaaee0fc4f5b59b259c49751646f17f6b1753bdc22d5972a95a867307af5b1cdcf30f72936442e1444a1322531487b068b0f4bf9ac7f2b7ad39cd2abc8fde945b8d1ad8ac7ca078bb070b5db1d04365091d777c205eb78039ab8ad1877dd4a99d3e6d78ddeeb49c28b6fe49bf2404ae4c64c589d67f9c6743cb1a356605e26353a2a7bdf600a683a31ebfb4383f9b107250f7ea5ba762648f458d734c57fe0a5544272d2edd469e522cdbef7c1d230fe7b41e7be6023109f2b376b7a80defbd4f789212f3405eb90cd0e57c9e03496b2efcc734fcbd448a8c9cbfb542347371ba1e0ffbf10b9d6fc792f78c0d7fa657d9d7706a5a8d7abed7dab2072b7fca3475c7b83a430af550676336bfcc544de8765abde19f5dbf2dfb218389b7391709375010c0ebef1ee84e489b0de70ecba05df4c3dbcd959e031624583d7fa120cb84892b812a9dce87b1fdf91be3d588cba0cf2703841812f107ba952f9874d0a4d0fefa9baf2b2462a2ba47c8390a51e34bf49bac79ead31ab8291fcca883a3ca32909956ec7fbae8a456f73bef3b4ceaccb8d8617ed7839e987d96fca4933363f97d264f04d5e2e138e98fd350f168dacfc1cddf90726b2f1af2c81d0d5d707f1f0cc955214960ecc020d0521b9162f2b0c90d5ac13b9013de352d427f0df554469c26237ce15a117432113297b559013681cc8c3e9e5f7a7e652efe69dd1f86553077f5b2ca24aa12ce782c8c6159a1562bdbfffd8b284909ea735d83e7fc4ce9b0ecff84650d8d8e6d6b122d27988210c54bdf1952c2aa56b9596c4b83bd12dcda785f796b40568a6fb1def66d6376802673f4f396e1bd0195c67c6ffff5e5bef5273623ffd4bbbe3b23e677f9a107f5d872d6a144626234e124bf0730a86284d3dbeca4377545e383acf7f230e113d1f34098c362de0df8b33314e8b2edcfdb131051479a2b33e53eebe92d6f5174bc75a54674a1eb6f8d49f142cbee2081ef9901e4ef009ba721b769fe69a2a56597785e33f6c329229b56861218325de9ad58e77744bbc48c634ed22febfef5b29ec2ad16e6f6079766705e60b391c9b277433598c19bec1d4a9e8f6616935caebfa4507c4e6a5837e2008e333ba80c69b76aec5dafe45d7480fc4d20c5fda13d12ec7258b26f357c39f274f6e6690f644ce35</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">您好, 这里需要密码.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
       <categories>
         <category>hexo</category>
       </categories>
       <tags>
-        <tag>butterfly</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -85,6 +77,57 @@
       </tags>
   </entry>
   <entry>
+    <title>hexo基于butterfly的页脚美化</title>
+    <url>/posts/2024/30918.html</url>
+    <content><![CDATA[<hr>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>1.在 \themes\butterfly\source\js 目录下创建一个 js 文件，将如下代码写入该文件:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 动态心跳</span><br><span class="line">$(document).ready(function(e)&#123;</span><br><span class="line">    $(&#x27;.copyright&#x27;).html(&#x27;©2024 - 2025 &lt;i class=&quot;fa-fw fas fa-heartbeat fa-beat&quot; style=&quot;color: #f92672;&quot;&gt;&lt;/i&gt; By 海伦泽&#x27;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">$(document).ready(function(e)&#123;</span><br><span class="line">    show_date_time();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">//本站运行时间</span><br><span class="line">function show_date_time()&#123;</span><br><span class="line">$(&#x27;.framework-info&#x27;).html(&#x27;本站已运行&lt;span id=&quot;span_dt_dt&quot; style=&quot;color: #fff;&quot;&gt;&lt;/span&gt;&#x27;);</span><br><span class="line">window.setTimeout(&quot;show_date_time()&quot;, 1000);</span><br><span class="line">BirthDay=new Date(&quot;11/10/2024 00:00:00&quot;);</span><br><span class="line">today=new Date();</span><br><span class="line">timeold=(today.getTime()-BirthDay.getTime());</span><br><span class="line">sectimeold=timeold/1000</span><br><span class="line">secondsold=Math.floor(sectimeold);</span><br><span class="line">msPerDay=24*60*60*1000</span><br><span class="line">e_daysold=timeold/msPerDay</span><br><span class="line">daysold=Math.floor(e_daysold);</span><br><span class="line">e_hrsold=(e_daysold-daysold)*24;</span><br><span class="line">hrsold=Math.floor(e_hrsold);</span><br><span class="line">e_minsold=(e_hrsold-hrsold)*60;</span><br><span class="line">minsold=Math.floor((e_hrsold-hrsold)*60);</span><br><span class="line">seconds=Math.floor((e_minsold-minsold)*60);</span><br><span class="line">span_dt_dt.innerHTML=&#x27;&lt;font style=color:#afb4db&gt;&#x27;+daysold+&#x27;&lt;/font&gt; 天 &lt;font style=color:#f391a9&gt;&#x27;+hrsold+&#x27;&lt;/font&gt; 时 &lt;font style=color:#fdb933&gt;&#x27;+minsold+&#x27;&lt;/font&gt; 分 &lt;font style=color:#a3cf62&gt;&#x27;+seconds+&#x27;&lt;/font&gt; 秒&#x27;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>更多图标和动画效果可以查看 FontAwesome5 的官网和文档<br>将代码中的 new Date () 修改成自己网站搭建的时间（月 &#x2F; 日 &#x2F; 年 时：分：秒）<br>时间数字可以自由更换颜色</p>
+<p>2.找到主题配置文件_config.butterfly.yml，在 inject 的 bottom 处引入该 js 文件 同时加入 head 处引入 jquery.min.js 确保能正常使用 ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inject:</span><br><span class="line">    head:</span><br><span class="line">        - &lt;script src=&quot;https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    bottom:</span><br><span class="line">        - &lt;script src=&quot;/js/xxx.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>重新部署，启动，就可以看到效果啦。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>除了跳动的♥还可以有多种图案选择，可以到官网查看，自己 DIY。</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>butterfly</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo基于butterfly的图流背景与顶部图修改</title>
+    <url>/posts/2024/31891.html</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前使用过 <a href="/posts/2024/30918.html" title="hexo基于butterfly的页脚美化">hexo基于butterfly的页脚美化</a> 的请注意侧边栏透明化。</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="1-设置图片"><a href="#1-设置图片" class="headerlink" title="1.设置图片"></a>1.设置图片</h3><p>这个是 Butterfly 自带的功能，修改主题的配置文件 _config.butterfly.yml.</p>
+<p>编辑 index_img、background、footer_img 选项。<br>设置网站背景，并将主页顶部图和页脚背景改为透明。<br>(需要将以下示例地址替换为自己的图片地址。)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Image (圖片設置)</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># The banner image of home page</span><br><span class="line">index_img: transparent</span><br><span class="line"></span><br><span class="line"># Beautify/Effect (美化/效果)</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># Website Background (設置網站背景)</span><br><span class="line"># can set it to color or image (可設置圖片 或者 顔色)</span><br><span class="line"># The formal of image: url(http://xxxxxx.com/xxx.jpg)</span><br><span class="line">background: url(https://example.com/img/background.jpg)</span><br><span class="line"></span><br><span class="line"># Footer Background</span><br><span class="line">footer_img: transparent</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-引入相关样式"><a href="#2-引入相关样式" class="headerlink" title="2.引入相关样式"></a>2.引入相关样式</h3><p>新建一个文件，位于 source&#x2F;css&#x2F;modify.styl，并增加以下内容。<br>(此处只是举例，也可以使用自己已有的样式文件。)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@import &#x27;nib&#x27;</span><br><span class="line"></span><br><span class="line">// 顶部图</span><br><span class="line">#page-header</span><br><span class="line">  &amp;, &amp;:before</span><br><span class="line">    background: transparent !important</span><br><span class="line">  &amp;.post-bg, &amp;.not-home-page</span><br><span class="line">    height: 280px !important</span><br><span class="line">  #post-info</span><br><span class="line">    bottom: 40px !important</span><br><span class="line">  #page-site-info</span><br><span class="line">    top: 140px !important</span><br><span class="line"></span><br><span class="line">  @media screen and (max-width: 768px)</span><br><span class="line">    &amp;.not-home-page</span><br><span class="line">      height: 200px !important</span><br><span class="line">    #post-info</span><br><span class="line">      bottom: 10px !important</span><br><span class="line">    #page-site-info</span><br><span class="line">      top: 100px !important</span><br><span class="line"></span><br><span class="line">.top-img</span><br><span class="line">  height: 250px</span><br><span class="line">  margin: -50px -40px 50px</span><br><span class="line">  border-top-left-radius: inherit</span><br><span class="line">  border-top-right-radius: inherit</span><br><span class="line">  background-position: center center</span><br><span class="line">  background-size: cover</span><br><span class="line">  transition: all 0.3s</span><br><span class="line"></span><br><span class="line">  @media screen and (max-width: 768px)</span><br><span class="line">    height: 230px</span><br><span class="line">    margin: -36px -14px 36px</span><br><span class="line"></span><br><span class="line">  [data-theme=&#x27;dark&#x27;] &amp;</span><br><span class="line">    filter: brightness(0.8)</span><br><span class="line"></span><br><span class="line">// 页脚</span><br><span class="line">#footer:before</span><br><span class="line">  background-color: alpha(#FFF, .5)</span><br><span class="line"></span><br><span class="line">  [data-theme=&#x27;dark&#x27;] &amp;</span><br><span class="line">    background-color: alpha(#000, .5)</span><br><span class="line"></span><br><span class="line">#footer-wrap, #footer-wrap a</span><br><span class="line">  color: #111</span><br><span class="line">  transition: unset</span><br><span class="line"></span><br><span class="line">  [data-theme=&#x27;dark&#x27;] &amp;</span><br><span class="line">    color: var(--light-grey)</span><br></pre></td></tr></table></figure>
+
+<p>在主题配置文件 _config.butterfly.yml 的 inject.head 引入样式。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># other (其他)</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># Inject</span><br><span class="line"># Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)</span><br><span class="line"># 插入代码到头部 &lt;/head&gt; 之前 和 底部 &lt;/body&gt; 之前</span><br><span class="line">inject:</span><br><span class="line">  head:</span><br><span class="line">    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/modify.css&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>modify.styl 会被 Hexo 渲染成 modify.css 文件，所以此处应为 modify.css。</p>
+<p>这时候，hexo cl; hexo g; hexo s;查看效果！没问题就hexo d上传。有问题接着往下看：</p>
+<h3 id="增加插件脚本-上面没问题无需往下看"><a href="#增加插件脚本-上面没问题无需往下看" class="headerlink" title="增加插件脚本(上面没问题无需往下看)"></a>增加插件脚本(上面没问题无需往下看)</h3><p>因为使用了 cheerio 来解析 HTML，所以需要先安装此依赖。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install cheerio</span><br></pre></td></tr></table></figure>
+
+<p>新建一个文件，位于 scripts&#x2F;modify.js，并增加以下内容。<br>(此处只是举例，也可以使用自己已有的插件脚本文件。)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;use strict&#x27;;</span><br><span class="line">const cheerio = require(&#x27;cheerio&#x27;);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 在页面插入新顶部图</span><br><span class="line"> * @param &#123;cheerio.Root&#125; $ Root</span><br><span class="line"> */</span><br><span class="line">function insertTopImg($) &#123;</span><br><span class="line">    let header = $(&#x27;#page-header&#x27;);</span><br><span class="line">    if (header.length === 0) return;</span><br><span class="line">    let background = header.css(&#x27;background-image&#x27;);</span><br><span class="line">    if (!background) return;</span><br><span class="line">    $(&#x27;#post, #page, #archive, #tag, #category&#x27;).prepend(`&lt;div class=&quot;top-img&quot; style=&quot;background-image: $&#123;background&#125;;&quot;&gt;&lt;/div&gt;`);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">hexo.extend.filter.register(&#x27;after_render:html&#x27;, function(str, data) &#123;</span><br><span class="line">    let $ = cheerio.load(str, &#123;</span><br><span class="line">        decodeEntities: false</span><br><span class="line">    &#125;);</span><br><span class="line">    insertTopImg($);</span><br><span class="line">    return $.html();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="大功告成"><a href="#大功告成" class="headerlink" title="大功告成"></a>大功告成</h3>]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>butterfly</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>通过 bat 脚本实现 hexo 常用功能菜单</title>
     <url>/posts/2024/57698.html</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>广大的 Hexo 用户：你是否面对每天重复且繁杂的 hexo new、hexo new page、hexo g、hexo cl 等等这些命令感到厌烦？</p>
@@ -113,32 +156,6 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo基于butterfly的页脚美化</title>
-    <url>/posts/2024/30918.html</url>
-    <content><![CDATA[<hr>
-<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>1.在 \themes\butterfly\source\js 目录下创建一个 js 文件，将如下代码写入该文件:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 动态心跳</span><br><span class="line">$(document).ready(function(e)&#123;</span><br><span class="line">    $(&#x27;.copyright&#x27;).html(&#x27;©2024 - 2025 &lt;i class=&quot;fa-fw fas fa-heartbeat fa-beat&quot; style=&quot;color: #f92672;&quot;&gt;&lt;/i&gt; By 海伦泽&#x27;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">$(document).ready(function(e)&#123;</span><br><span class="line">    show_date_time();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">//本站运行时间</span><br><span class="line">function show_date_time()&#123;</span><br><span class="line">$(&#x27;.framework-info&#x27;).html(&#x27;本站已运行&lt;span id=&quot;span_dt_dt&quot; style=&quot;color: #fff;&quot;&gt;&lt;/span&gt;&#x27;);</span><br><span class="line">window.setTimeout(&quot;show_date_time()&quot;, 1000);</span><br><span class="line">BirthDay=new Date(&quot;11/10/2024 00:00:00&quot;);</span><br><span class="line">today=new Date();</span><br><span class="line">timeold=(today.getTime()-BirthDay.getTime());</span><br><span class="line">sectimeold=timeold/1000</span><br><span class="line">secondsold=Math.floor(sectimeold);</span><br><span class="line">msPerDay=24*60*60*1000</span><br><span class="line">e_daysold=timeold/msPerDay</span><br><span class="line">daysold=Math.floor(e_daysold);</span><br><span class="line">e_hrsold=(e_daysold-daysold)*24;</span><br><span class="line">hrsold=Math.floor(e_hrsold);</span><br><span class="line">e_minsold=(e_hrsold-hrsold)*60;</span><br><span class="line">minsold=Math.floor((e_hrsold-hrsold)*60);</span><br><span class="line">seconds=Math.floor((e_minsold-minsold)*60);</span><br><span class="line">span_dt_dt.innerHTML=&#x27;&lt;font style=color:#afb4db&gt;&#x27;+daysold+&#x27;&lt;/font&gt; 天 &lt;font style=color:#f391a9&gt;&#x27;+hrsold+&#x27;&lt;/font&gt; 时 &lt;font style=color:#fdb933&gt;&#x27;+minsold+&#x27;&lt;/font&gt; 分 &lt;font style=color:#a3cf62&gt;&#x27;+seconds+&#x27;&lt;/font&gt; 秒&#x27;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>更多图标和动画效果可以查看 FontAwesome5 的官网和文档<br>将代码中的 new Date () 修改成自己网站搭建的时间（月 &#x2F; 日 &#x2F; 年 时：分：秒）<br>时间数字可以自由更换颜色</p>
-<p>2.找到主题配置文件_config.butterfly.yml，在 inject 的 bottom 处引入该 js 文件 同时加入 head 处引入 jquery.min.js 确保能正常使用 ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inject:</span><br><span class="line">    head:</span><br><span class="line">        - &lt;script src=&quot;https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    bottom:</span><br><span class="line">        - &lt;script src=&quot;/js/xxx.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<p>重新部署，启动，就可以看到效果啦。</p>
-<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>除了跳动的♥还可以有多种图案选择，可以到官网查看，自己 DIY。</p>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>butterfly</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>友情链接</title>
-    <url>/link/index.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>分类</title>
     <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
@@ -158,6 +175,11 @@
   
 </div>
 ]]></content>
+  </entry>
+  <entry>
+    <title>友情链接</title>
+    <url>/link/index.html</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>ohmygirl</title>
