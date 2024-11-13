@@ -21,6 +21,72 @@
       </tags>
   </entry>
   <entry>
+    <title>Hexo基于butterfly的侧边栏添加微博热搜</title>
+    <url>/posts/2024/57697.html</url>
+    <content><![CDATA[<h2 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h2><p><img src="https://0923067.webp.li/202411110945403.webp"></p>
+<h3 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h3><p> 1.在\themes\butterfly\layout\includes\widget目录下新建card_weibo.pug文件，并写入如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if theme.aside.card_weibo.enable</span><br><span class="line">  .card-widget.card-weibo</span><br><span class="line">    .card-content</span><br><span class="line">      .item-headline</span><br><span class="line">        i.fab.fa-weibo</span><br><span class="line">        span 微博热搜</span><br><span class="line">      #weibo-container</span><br><span class="line">        .weibo-list</span><br></pre></td></tr></table></figure>
+
+<p> 2.在\themes\butterfly\layout\includes\widget\index.pug文件中page项添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">!=partial(&#x27;includes/widget/card_weibo&#x27;, &#123;&#125;, &#123;cache: true&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://0923067.webp.li/202411110948777.webp"></p>
+<p>3.在\themes\butterfly\source\js目录下新建weibo.js文件，并写入如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fetch(&#x27;https://wb.bore.vip/api&#x27;).then(data=&gt;data.json()).then(data=&gt;&#123;</span><br><span class="line">    let html = &#x27;&lt;style&gt;.weibo-new&#123;background:#ff3852&#125;.weibo-hot&#123;background:#ff9406&#125;.weibo-jyzy&#123;background:#ffc000&#125;.weibo-recommend&#123;background:#00b7ee&#125;.weibo-adrecommend&#123;background:#febd22&#125;.weibo-friend&#123;background:#8fc21e&#125;.weibo-boom&#123;background:#bd0000&#125;.weibo-topic&#123;background:#ff6f49&#125;.weibo-topic-ad&#123;background:#4dadff&#125;.weibo-boil&#123;background:#f86400&#125;#weibo-container&#123;overflow-y:auto;-ms-overflow-style:none;scrollbar-width:none&#125;#weibo-container::-webkit-scrollbar&#123;display:none&#125;.weibo-list-item&#123;display:flex;flex-direction:row;justify-content:space-between;flex-wrap:nowrap&#125;.weibo-title&#123;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:auto&#125;.weibo-num&#123;float:right&#125;.weibo-hotness&#123;display:inline-block;padding:0 6px;transform:scale(.8) translateX(-3px);color:#fff;border-radius:8px&#125;&lt;/style&gt;&#x27;</span><br><span class="line">    html += &#x27;&lt;div class=&quot;weibo-list&quot;&gt;&#x27;</span><br><span class="line">    let hotness = &#123;</span><br><span class="line">        &#x27;爆&#x27;: &#x27;weibo-boom&#x27;,</span><br><span class="line">        &#x27;热&#x27;: &#x27;weibo-hot&#x27;,</span><br><span class="line">        &#x27;沸&#x27;: &#x27;weibo-boil&#x27;,</span><br><span class="line">        &#x27;新&#x27;: &#x27;weibo-new&#x27;,</span><br><span class="line">        &#x27;荐&#x27;: &#x27;weibo-recommend&#x27;,</span><br><span class="line">        &#x27;音&#x27;: &#x27;weibo-jyzy&#x27;,</span><br><span class="line">        &#x27;影&#x27;: &#x27;weibo-jyzy&#x27;,</span><br><span class="line">        &#x27;剧&#x27;: &#x27;weibo-jyzy&#x27;,</span><br><span class="line">        &#x27;综&#x27;: &#x27;weibo-jyzy&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    for (let item of data) &#123;</span><br><span class="line">        html += &#x27;&lt;div class=&quot;weibo-list-item&quot;&gt;&lt;div class=&quot;weibo-hotness &#x27; + hotness[(item.hot || &#x27;荐&#x27;)] + &#x27;&quot;&gt;&#x27; + (item.hot || &#x27;荐&#x27;) + &#x27;&lt;/div&gt;&#x27; + &#x27;&lt;span class=&quot;weibo-title&quot;&gt;&lt;a title=&quot;&#x27; + item.title + &#x27;&quot;href=&quot;&#x27; + item.url + &#x27;&quot; target=&quot;_blank&quot; rel=&quot;external nofollow noreferrer&quot;&gt;&#x27; + item.title + &#x27;&lt;/a&gt;&lt;/span&gt;&#x27; + &#x27;&lt;div class=&quot;weibo-num&quot;&gt;&lt;span&gt;&#x27; + item.num + &#x27;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    html += &#x27;&lt;/div&gt;&#x27;</span><br><span class="line">    document.getElementById(&#x27;weibo-container&#x27;).innerHTML = html</span><br><span class="line">&#125;</span><br><span class="line">).catch(function(error) &#123;</span><br><span class="line">    console.log(error);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>并在主题配置文件_config.butterfly.yml的bottom处引入该文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inject:</span><br><span class="line">  bottom:</span><br><span class="line">    - &lt;script src=&quot;/js/weibo.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>4.在\themes\butterfly\source\css目录下新建weibo.css文件，并写入如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#weibo-container&#123;</span><br><span class="line">  width: 100%; </span><br><span class="line">  height: 150px;</span><br><span class="line">  font-size: 95%;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.weibo-new&#123;</span><br><span class="line">  background:#ff3852</span><br><span class="line">&#125;</span><br><span class="line">.weibo-hot&#123;</span><br><span class="line">  background:#ff9406</span><br><span class="line">&#125;</span><br><span class="line">.weibo-jyzy&#123;</span><br><span class="line">  background:#ffc000</span><br><span class="line">&#125;</span><br><span class="line">.weibo-recommend&#123;</span><br><span class="line">  background:#00b7ee</span><br><span class="line">&#125;</span><br><span class="line">.weibo-adrecommend&#123;</span><br><span class="line">  background:#febd22</span><br><span class="line">&#125;</span><br><span class="line">.weibo-friend&#123;</span><br><span class="line">  background:#8fc21e</span><br><span class="line">&#125;</span><br><span class="line">.weibo-boom&#123;</span><br><span class="line">  background:#bd0000</span><br><span class="line">&#125;</span><br><span class="line">.weibo-topic&#123;</span><br><span class="line">  background:#ff6f49</span><br><span class="line">&#125;</span><br><span class="line">.weibo-topic-ad&#123;</span><br><span class="line">  background:#4dadff</span><br><span class="line">&#125;</span><br><span class="line">.weibo-boil&#123;</span><br><span class="line">  background:#f86400</span><br><span class="line">&#125;</span><br><span class="line">#weibo-container&#123;</span><br><span class="line">  overflow-y:auto;</span><br><span class="line">  -ms-overflow-style:none;</span><br><span class="line">  scrollbar-width:none</span><br><span class="line">&#125;</span><br><span class="line">#weibo-container::-webkit-scrollbar&#123;</span><br><span class="line">  display:none</span><br><span class="line">&#125;</span><br><span class="line">.weibo-list-item&#123;</span><br><span class="line">  display:flex;</span><br><span class="line">  flex-direction:row;</span><br><span class="line">  justify-content:space-between;</span><br><span class="line">  flex-wrap:nowrap</span><br><span class="line">&#125;</span><br><span class="line">.weibo-title&#123;</span><br><span class="line">  white-space:nowrap;</span><br><span class="line">  overflow:hidden;</span><br><span class="line">  text-overflow:ellipsis;</span><br><span class="line">  margin-right:auto</span><br><span class="line">&#125;</span><br><span class="line">.weibo-num&#123;</span><br><span class="line">  float:right</span><br><span class="line">&#125;</span><br><span class="line">.weibo-hotness&#123;</span><br><span class="line">  display:inline-block;</span><br><span class="line">  padding:0 6px;</span><br><span class="line">  transform:scale(.8) translateX(-3px);</span><br><span class="line">  color:#fff;</span><br><span class="line">  border-radius:8px</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>并在主题配置文件_config.butterfly.yml的head处引入该文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inject:</span><br><span class="line">  head:</span><br><span class="line">    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/weibo.css&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>5.在主题配置文件_config.butterfly.yml的aside处添加如下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aside:</span><br><span class="line">    card_weibo:</span><br><span class="line">    enable: true</span><br><span class="line">    sort_order: # Don&#x27;t modify the setting unless you know how it works</span><br></pre></td></tr></table></figure>
+<p>可以在配置文件中选择开启或关闭</p>
+<p>6.重新部署，即可看到效果。</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo基于butterfly的图流背景与顶部图修改</title>
+    <url>/posts/2024/31891.html</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前使用过 <a href="/posts/2024/30918.html" title="hexo基于butterfly的页脚美化">hexo基于butterfly的页脚美化</a> 的请注意侧边栏透明化。</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="1-设置图片"><a href="#1-设置图片" class="headerlink" title="1.设置图片"></a>1.设置图片</h3><p>这个是 Butterfly 自带的功能，修改主题的配置文件 _config.butterfly.yml.</p>
+<p>编辑 index_img、background、footer_img 选项。<br>设置网站背景，并将主页顶部图和页脚背景改为透明。<br>(需要将以下示例地址替换为自己的图片地址。)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Image (圖片設置)</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># The banner image of home page</span><br><span class="line">index_img: transparent</span><br><span class="line"></span><br><span class="line"># Beautify/Effect (美化/效果)</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># Website Background (設置網站背景)</span><br><span class="line"># can set it to color or image (可設置圖片 或者 顔色)</span><br><span class="line"># The formal of image: url(http://xxxxxx.com/xxx.jpg)</span><br><span class="line">background: url(https://example.com/img/background.jpg)</span><br><span class="line"></span><br><span class="line"># Footer Background</span><br><span class="line">footer_img: transparent</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-引入相关样式"><a href="#2-引入相关样式" class="headerlink" title="2.引入相关样式"></a>2.引入相关样式</h3><p>新建一个文件，位于 source&#x2F;css&#x2F;modify.styl，并增加以下内容。<br>(此处只是举例，也可以使用自己已有的样式文件。)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@import &#x27;nib&#x27;</span><br><span class="line"></span><br><span class="line">// 顶部图</span><br><span class="line">#page-header</span><br><span class="line">  &amp;, &amp;:before</span><br><span class="line">    background: transparent !important</span><br><span class="line">  &amp;.post-bg, &amp;.not-home-page</span><br><span class="line">    height: 280px !important</span><br><span class="line">  #post-info</span><br><span class="line">    bottom: 40px !important</span><br><span class="line">  #page-site-info</span><br><span class="line">    top: 140px !important</span><br><span class="line"></span><br><span class="line">  @media screen and (max-width: 768px)</span><br><span class="line">    &amp;.not-home-page</span><br><span class="line">      height: 200px !important</span><br><span class="line">    #post-info</span><br><span class="line">      bottom: 10px !important</span><br><span class="line">    #page-site-info</span><br><span class="line">      top: 100px !important</span><br><span class="line"></span><br><span class="line">.top-img</span><br><span class="line">  height: 250px</span><br><span class="line">  margin: -50px -40px 50px</span><br><span class="line">  border-top-left-radius: inherit</span><br><span class="line">  border-top-right-radius: inherit</span><br><span class="line">  background-position: center center</span><br><span class="line">  background-size: cover</span><br><span class="line">  transition: all 0.3s</span><br><span class="line"></span><br><span class="line">  @media screen and (max-width: 768px)</span><br><span class="line">    height: 230px</span><br><span class="line">    margin: -36px -14px 36px</span><br><span class="line"></span><br><span class="line">  [data-theme=&#x27;dark&#x27;] &amp;</span><br><span class="line">    filter: brightness(0.8)</span><br><span class="line"></span><br><span class="line">// 页脚</span><br><span class="line">#footer:before</span><br><span class="line">  background-color: alpha(#FFF, .5)</span><br><span class="line"></span><br><span class="line">  [data-theme=&#x27;dark&#x27;] &amp;</span><br><span class="line">    background-color: alpha(#000, .5)</span><br><span class="line"></span><br><span class="line">#footer-wrap, #footer-wrap a</span><br><span class="line">  color: #111</span><br><span class="line">  transition: unset</span><br><span class="line"></span><br><span class="line">  [data-theme=&#x27;dark&#x27;] &amp;</span><br><span class="line">    color: var(--light-grey)</span><br></pre></td></tr></table></figure>
+
+<p>在主题配置文件 _config.butterfly.yml 的 inject.head 引入样式。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># other (其他)</span><br><span class="line"># --------------------------------------</span><br><span class="line"></span><br><span class="line"># Inject</span><br><span class="line"># Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)</span><br><span class="line"># 插入代码到头部 &lt;/head&gt; 之前 和 底部 &lt;/body&gt; 之前</span><br><span class="line">inject:</span><br><span class="line">  head:</span><br><span class="line">    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/modify.css&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>modify.styl 会被 Hexo 渲染成 modify.css 文件，所以此处应为 modify.css。</p>
+<p>这时候，hexo cl; hexo g; hexo s;查看效果！没问题就hexo d上传。有问题接着往下看：</p>
+<h3 id="增加插件脚本-上面没问题无需往下看"><a href="#增加插件脚本-上面没问题无需往下看" class="headerlink" title="增加插件脚本(上面没问题无需往下看)"></a>增加插件脚本(上面没问题无需往下看)</h3><p>因为使用了 cheerio 来解析 HTML，所以需要先安装此依赖。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install cheerio</span><br></pre></td></tr></table></figure>
+
+<p>新建一个文件，位于 scripts&#x2F;modify.js，并增加以下内容。<br>(此处只是举例，也可以使用自己已有的插件脚本文件。)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;use strict&#x27;;</span><br><span class="line">const cheerio = require(&#x27;cheerio&#x27;);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 在页面插入新顶部图</span><br><span class="line"> * @param &#123;cheerio.Root&#125; $ Root</span><br><span class="line"> */</span><br><span class="line">function insertTopImg($) &#123;</span><br><span class="line">    let header = $(&#x27;#page-header&#x27;);</span><br><span class="line">    if (header.length === 0) return;</span><br><span class="line">    let background = header.css(&#x27;background-image&#x27;);</span><br><span class="line">    if (!background) return;</span><br><span class="line">    $(&#x27;#post, #page, #archive, #tag, #category&#x27;).prepend(`&lt;div class=&quot;top-img&quot; style=&quot;background-image: $&#123;background&#125;;&quot;&gt;&lt;/div&gt;`);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">hexo.extend.filter.register(&#x27;after_render:html&#x27;, function(str, data) &#123;</span><br><span class="line">    let $ = cheerio.load(str, &#123;</span><br><span class="line">        decodeEntities: false</span><br><span class="line">    &#125;);</span><br><span class="line">    insertTopImg($);</span><br><span class="line">    return $.html();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="大功告成"><a href="#大功告成" class="headerlink" title="大功告成"></a>大功告成</h3>]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>butterfly</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo基于butterfly的页脚美化</title>
     <url>/posts/2024/30918.html</url>
     <content><![CDATA[<hr>
@@ -71,41 +137,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo基于butterfly的侧边栏添加微博热搜</title>
-    <url>/posts/2024/57697.html</url>
-    <content><![CDATA[<h2 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h2><p><img src="https://0923067.webp.li/202411110945403.webp"></p>
-<h3 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h3><p> 1.在\themes\butterfly\layout\includes\widget目录下新建card_weibo.pug文件，并写入如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if theme.aside.card_weibo.enable</span><br><span class="line">  .card-widget.card-weibo</span><br><span class="line">    .card-content</span><br><span class="line">      .item-headline</span><br><span class="line">        i.fab.fa-weibo</span><br><span class="line">        span 微博热搜</span><br><span class="line">      #weibo-container</span><br><span class="line">        .weibo-list</span><br></pre></td></tr></table></figure>
-
-<p> 2.在\themes\butterfly\layout\includes\widget\index.pug文件中page项添加如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">!=partial(&#x27;includes/widget/card_weibo&#x27;, &#123;&#125;, &#123;cache: true&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://0923067.webp.li/202411110948777.webp"></p>
-<p>3.在\themes\butterfly\source\js目录下新建weibo.js文件，并写入如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fetch(&#x27;https://wb.bore.vip/api&#x27;).then(data=&gt;data.json()).then(data=&gt;&#123;</span><br><span class="line">    let html = &#x27;&lt;style&gt;.weibo-new&#123;background:#ff3852&#125;.weibo-hot&#123;background:#ff9406&#125;.weibo-jyzy&#123;background:#ffc000&#125;.weibo-recommend&#123;background:#00b7ee&#125;.weibo-adrecommend&#123;background:#febd22&#125;.weibo-friend&#123;background:#8fc21e&#125;.weibo-boom&#123;background:#bd0000&#125;.weibo-topic&#123;background:#ff6f49&#125;.weibo-topic-ad&#123;background:#4dadff&#125;.weibo-boil&#123;background:#f86400&#125;#weibo-container&#123;overflow-y:auto;-ms-overflow-style:none;scrollbar-width:none&#125;#weibo-container::-webkit-scrollbar&#123;display:none&#125;.weibo-list-item&#123;display:flex;flex-direction:row;justify-content:space-between;flex-wrap:nowrap&#125;.weibo-title&#123;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:auto&#125;.weibo-num&#123;float:right&#125;.weibo-hotness&#123;display:inline-block;padding:0 6px;transform:scale(.8) translateX(-3px);color:#fff;border-radius:8px&#125;&lt;/style&gt;&#x27;</span><br><span class="line">    html += &#x27;&lt;div class=&quot;weibo-list&quot;&gt;&#x27;</span><br><span class="line">    let hotness = &#123;</span><br><span class="line">        &#x27;爆&#x27;: &#x27;weibo-boom&#x27;,</span><br><span class="line">        &#x27;热&#x27;: &#x27;weibo-hot&#x27;,</span><br><span class="line">        &#x27;沸&#x27;: &#x27;weibo-boil&#x27;,</span><br><span class="line">        &#x27;新&#x27;: &#x27;weibo-new&#x27;,</span><br><span class="line">        &#x27;荐&#x27;: &#x27;weibo-recommend&#x27;,</span><br><span class="line">        &#x27;音&#x27;: &#x27;weibo-jyzy&#x27;,</span><br><span class="line">        &#x27;影&#x27;: &#x27;weibo-jyzy&#x27;,</span><br><span class="line">        &#x27;剧&#x27;: &#x27;weibo-jyzy&#x27;,</span><br><span class="line">        &#x27;综&#x27;: &#x27;weibo-jyzy&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    for (let item of data) &#123;</span><br><span class="line">        html += &#x27;&lt;div class=&quot;weibo-list-item&quot;&gt;&lt;div class=&quot;weibo-hotness &#x27; + hotness[(item.hot || &#x27;荐&#x27;)] + &#x27;&quot;&gt;&#x27; + (item.hot || &#x27;荐&#x27;) + &#x27;&lt;/div&gt;&#x27; + &#x27;&lt;span class=&quot;weibo-title&quot;&gt;&lt;a title=&quot;&#x27; + item.title + &#x27;&quot;href=&quot;&#x27; + item.url + &#x27;&quot; target=&quot;_blank&quot; rel=&quot;external nofollow noreferrer&quot;&gt;&#x27; + item.title + &#x27;&lt;/a&gt;&lt;/span&gt;&#x27; + &#x27;&lt;div class=&quot;weibo-num&quot;&gt;&lt;span&gt;&#x27; + item.num + &#x27;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    html += &#x27;&lt;/div&gt;&#x27;</span><br><span class="line">    document.getElementById(&#x27;weibo-container&#x27;).innerHTML = html</span><br><span class="line">&#125;</span><br><span class="line">).catch(function(error) &#123;</span><br><span class="line">    console.log(error);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>并在主题配置文件_config.butterfly.yml的bottom处引入该文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inject:</span><br><span class="line">  bottom:</span><br><span class="line">    - &lt;script src=&quot;/js/weibo.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>4.在\themes\butterfly\source\css目录下新建weibo.css文件，并写入如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#weibo-container&#123;</span><br><span class="line">  width: 100%; </span><br><span class="line">  height: 150px;</span><br><span class="line">  font-size: 95%;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.weibo-new&#123;</span><br><span class="line">  background:#ff3852</span><br><span class="line">&#125;</span><br><span class="line">.weibo-hot&#123;</span><br><span class="line">  background:#ff9406</span><br><span class="line">&#125;</span><br><span class="line">.weibo-jyzy&#123;</span><br><span class="line">  background:#ffc000</span><br><span class="line">&#125;</span><br><span class="line">.weibo-recommend&#123;</span><br><span class="line">  background:#00b7ee</span><br><span class="line">&#125;</span><br><span class="line">.weibo-adrecommend&#123;</span><br><span class="line">  background:#febd22</span><br><span class="line">&#125;</span><br><span class="line">.weibo-friend&#123;</span><br><span class="line">  background:#8fc21e</span><br><span class="line">&#125;</span><br><span class="line">.weibo-boom&#123;</span><br><span class="line">  background:#bd0000</span><br><span class="line">&#125;</span><br><span class="line">.weibo-topic&#123;</span><br><span class="line">  background:#ff6f49</span><br><span class="line">&#125;</span><br><span class="line">.weibo-topic-ad&#123;</span><br><span class="line">  background:#4dadff</span><br><span class="line">&#125;</span><br><span class="line">.weibo-boil&#123;</span><br><span class="line">  background:#f86400</span><br><span class="line">&#125;</span><br><span class="line">#weibo-container&#123;</span><br><span class="line">  overflow-y:auto;</span><br><span class="line">  -ms-overflow-style:none;</span><br><span class="line">  scrollbar-width:none</span><br><span class="line">&#125;</span><br><span class="line">#weibo-container::-webkit-scrollbar&#123;</span><br><span class="line">  display:none</span><br><span class="line">&#125;</span><br><span class="line">.weibo-list-item&#123;</span><br><span class="line">  display:flex;</span><br><span class="line">  flex-direction:row;</span><br><span class="line">  justify-content:space-between;</span><br><span class="line">  flex-wrap:nowrap</span><br><span class="line">&#125;</span><br><span class="line">.weibo-title&#123;</span><br><span class="line">  white-space:nowrap;</span><br><span class="line">  overflow:hidden;</span><br><span class="line">  text-overflow:ellipsis;</span><br><span class="line">  margin-right:auto</span><br><span class="line">&#125;</span><br><span class="line">.weibo-num&#123;</span><br><span class="line">  float:right</span><br><span class="line">&#125;</span><br><span class="line">.weibo-hotness&#123;</span><br><span class="line">  display:inline-block;</span><br><span class="line">  padding:0 6px;</span><br><span class="line">  transform:scale(.8) translateX(-3px);</span><br><span class="line">  color:#fff;</span><br><span class="line">  border-radius:8px</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>并在主题配置文件_config.butterfly.yml的head处引入该文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inject:</span><br><span class="line">  head:</span><br><span class="line">    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/weibo.css&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>5.在主题配置文件_config.butterfly.yml的aside处添加如下配置：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aside:</span><br><span class="line">    card_weibo:</span><br><span class="line">    enable: true</span><br><span class="line">    sort_order: # Don&#x27;t modify the setting unless you know how it works</span><br></pre></td></tr></table></figure>
-<p>可以在配置文件中选择开启或关闭</p>
-<p>6.重新部署，即可看到效果。</p>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Gallery</title>
     <url>/Gallery/index.html</url>
     <content><![CDATA[<div class="gallery-group-main">
@@ -122,6 +153,11 @@
 ]]></content>
   </entry>
   <entry>
+    <title>分类</title>
+    <url>/categories/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>友情链接</title>
     <url>/link/index.html</url>
     <content><![CDATA[]]></content>
@@ -129,11 +165,6 @@
   <entry>
     <title>标签</title>
     <url>/tags/index.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>分类</title>
-    <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
