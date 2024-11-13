@@ -36,6 +36,26 @@
       </tags>
   </entry>
   <entry>
+    <title>Hexo基于butterfly文章页透明效果</title>
+    <url>/posts/2024/19782.html</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在不妨碍正常阅读的情况下想更好地展示背景或者一些效果，实现文章页透明是一种不错的选择。</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>1.在 \themes\butterfly\source\css 路径下创建一个 xxx.css 文件，在文件中添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/* 首页文章栏背景透明 */</span><br><span class="line">#recent-posts&gt;.recent-post-item,.layout_page&gt;div:first-child:not(.recent-posts),.layout_post&gt;#page,.layout_post&gt;#post,.read-mode .layout_post&gt;#post &#123;</span><br><span class="line">    background: var(--light_bg_color)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* 侧边栏透明 */</span><br><span class="line">#aside-content .card-widget &#123;</span><br><span class="line">    background: var(--light_bg_color)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.然后将该文件引入到_config.butterfly.yml 文件中 inject 的 head 处：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/xxx.css&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>完毕，重新部署后就可以看到效果啦，就是这么简单！</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>butterfly</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo基于butterfly的页脚美化</title>
     <url>/posts/2024/30918.html</url>
     <content><![CDATA[<hr>
@@ -102,14 +122,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>ohmygirl</title>
-    <url>/Gallery/ohmygirl/index.html</url>
-    <content><![CDATA[<div class="gallery-container" data-type="data" data-button="">
-      <div class="gallery-items">[{"url":"https://i.loli.net/2019/12/25/Fze9jchtnyJXMHN.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/ryLVePaqkYm4TEK.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/gEy5Zc1Ai6VuO4N.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/6nepIJ1xTgufatZ.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/E7Jvr4eIPwUNmzq.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/mh19anwBSWIkGlH.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/2tu9JC8ewpBFagv.jpg","alt":""}]</div>
-    </div>
-]]></content>
-  </entry>
-  <entry>
     <title>友情链接</title>
     <url>/link/index.html</url>
     <content><![CDATA[]]></content>
@@ -118,6 +130,14 @@
     <title>分类</title>
     <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>ohmygirl</title>
+    <url>/Gallery/ohmygirl/index.html</url>
+    <content><![CDATA[<div class="gallery-container" data-type="data" data-button="">
+      <div class="gallery-items">[{"url":"https://i.loli.net/2019/12/25/Fze9jchtnyJXMHN.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/ryLVePaqkYm4TEK.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/gEy5Zc1Ai6VuO4N.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/6nepIJ1xTgufatZ.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/E7Jvr4eIPwUNmzq.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/mh19anwBSWIkGlH.jpg","alt":""},{"url":"https://i.loli.net/2019/12/25/2tu9JC8ewpBFagv.jpg","alt":""}]</div>
+    </div>
+]]></content>
   </entry>
   <entry>
     <title>标签</title>
